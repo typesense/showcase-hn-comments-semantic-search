@@ -1,0 +1,19 @@
+{
+  "name": "showcase-hn-comments-semantic-search",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "parcel index.html --port 3001",
+    "indexer": "node scripts/indexDataInTypesense.js",
+    "typesenseServer": "docker run -i -p 8108:8108 -v`pwd`/typesense-server-data/:/data typesense/typesense:0.25.0.rcbuildenv56-arm64 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors",
+    "build": "parcel build index.html --public-url https://hn-comments-search.typesense.org"
+  },
+  "dependencies": {
+    "csv-parse": "^5.3.10",
+    "dotenv": "^16.0.3",
+    "typesense": "^1.5.4-0"
+  },
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  }
+}
