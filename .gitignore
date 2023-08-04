@@ -1,3 +1,7 @@
-data/hn-comments-oct-2022.jsonl
+data/*.jsonl
+!data/hn-comments-1000-sample.jsonl
 node_modules
 yarn-error.log
+.env
+.parcel-cache
+dist

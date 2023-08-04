@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HN Comments Semantic Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./src/scss/index.scss">
+    <script type="module" src="./src/js/index.js"></script>
+
+    <link rel="shortcut icon" href="./favicon.png">
+
+</head>
+<body>
+<div class="container py-2">
+    <div class="bg-light">
+        <div class="bg-primary">
+            &nbsp;
+        </div>
+        <div class="py-3 px-4">
+            <div class="row">
+                <div class="col-sm">
+                    <h1 class="h5 mb-1">Hacker News Comments - Hybrid Search</h1>
+                    <div>Keyword Search + Semantic Search + Filtering + Faceting</div>
+                    <div>Powered by <a href="https://typesense.org" target="_blank">Typesense</a></div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-sm">
+                    <div class="row">
+                        <div class="col-sm-10 pe-sm-1">
+                            <div id="searchbox"></div>
+                        </div>
+                        <div class="col-sm-2 ps-sm-1 mt-2 mt-sm-0">
+                            <select class="form-select" id="search-type-select"
+                                    aria-label="Search Type">
+                                <option value="semantic" selected>Semantic Search</option>
+                                <option value="keyword">Keyword Search</option>
+                                <option value="hybrid">Hybrid Search</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-1">
+                        <div class="col-sm">
+                            Try:
+                            <span id="example-search-terms">
+                                  <a role="button" class="clickable-search-term">music streaming</a>,
+                                  <a role="button" class="clickable-search-term">high growth</a>,
+                                  <a role="button" class="clickable-search-term">beethoven</a>,
+                                  <a role="button" class="clickable-search-term">network congestion</a>,
+                                  <a role="button" class="clickable-search-term">ssl cipher</a>,
+                                  <a role="button" class="clickable-search-term">elvis presley</a>
+                                </span>
+                        </div>
+                        <div class="col-sm-4">
+                            <div id="stats"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-sm-2">
+                    <nav class="navbar navbar-expand-md navbar-light p-0 pb-3">
+                        <button class="navbar-toggler text-primary border-light-2" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#filters-section"
+                                aria-controls="filters-section" aria-expanded="false" aria-label="Toggle filters">
+                            <span class="navbar-toggler-icon"></span><span class="ml-2"
+                                                                           style="font-size: 13px;">Refine</span>
+                        </button>
+
+                        <div class="collapse navbar-collapse d-md-block mt-3 mt-md-0" id="filters-section">
+                            <div class="row mb-2">
+                                <div class="col-md">
+                                    <div id="users-refinement-list"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-sm-10">
+                    <div id="hits"></div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

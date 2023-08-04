@@ -3,17 +3,29 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "parcel index.html --port 3001",
+    "start": "parcel serve index.html --port 3001",
     "indexer": "node scripts/indexDataInTypesense.js",
     "typesenseServer": "docker run -i -p 8108:8108 -v`pwd`/typesense-server-data/:/data typesense/typesense:0.25.0.rcbuildenv56-arm64 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors",
     "build": "parcel build index.html --public-url https://hn-comments-search.typesense.org"
   },
   "dependencies": {
-    "csv-parse": "^5.3.10",
+    "bootstrap": "^5.3.1",
     "dotenv": "^16.0.3",
-    "typesense": "^1.5.4-0"
+    "jquery": "^3.7.0",
+    "@popperjs/core": "^2.11.8",
+    "typesense": "^1.5.4-2",
+    "instantsearch.js": "^4.56.8",
+    "typesense-instantsearch-adapter": "^2.7.1-5"
   },
   "devDependencies": {
-    "parcel": "^2.8.3"
+    "@parcel/transformer-sass": "2.8.3",
+    "buffer": "^5.5.0",
+    "parcel": "^2.8.3",
+    "process": "^0.11.10",
+    "eslint": "8.46.0",
+    "eslint-config-prettier": "8.10.0",
+    "eslint-plugin-import": "2.28.0",
+    "eslint-plugin-prettier": "5.0.0",
+    "prettier": "3.0.1"
   }
 }

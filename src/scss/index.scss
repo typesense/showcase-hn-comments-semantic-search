@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&family=Palanquin:wght@100;200;300;400;500;600;700&display=swap');
+
+$white: #fefefd;
+$gray-100: #f6f6ef;
+$gray-200: #ddddd7;
+$gray-300: #c5c5bf;
+$gray-400: #acaca7;
+$gray-500: #94948f;
+$gray-600: #7b7b78;
+$gray-700: #626260;
+$gray-800: #4a4a48;
+$gray-900: #313130;
+$black: #191918;
+
+$primary: #ff6600;
+$primary-dark-1: darken($primary, 35%);
+$primary-dark-2: #e6bb00;
+$primary-dark-3: #ddc593;
+$primary-dark-4: #b3b0a4;
+$secondary: #D90368;
+$secondary-dark-1: darken($secondary, 10%);
+$secondary-dark-2: #4f1c34;
+$dark: $gray-900 !default;
+
+$font-weight-base: 300;
+$headings-font-weight: 600;
+$display1-weight: 700;
+$display2-weight: 700;
+$display3-weight: 700;
+$display4-weight: 700;
+$display-line-height: 1.1;
+
+$font-family-sans-serif: 'Palanquin', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-size-base: 0.9rem;
+$h1-font-size: $font-size-base * 3.052;
+$h2-font-size: $font-size-base * 2.441;
+$h3-font-size: $font-size-base * 1.953;
+$h4-font-size: $font-size-base * 1.563;
+$h5-font-size: $font-size-base * 1.25;
+$h6-font-size: $font-size-base;
+
+$border-radius: .25rem;
+$table-border-color: lighten($gray-100, 5%);
+$table-cell-padding: 1rem;
+
+$enable-responsive-font-sizes: true;
+
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px,
+        xxl: 1800px
+);
+
+
+@import "~bootstrap/scss/bootstrap";
+
+.ais-SearchBox-loadingIndicator {
+  position: absolute;
+  top: 21px;
+  right: 60px;
+}
+
+a {
+  color: $gray-700;
+
+  &:hover {
+    color: $gray-900;
+  }
+}
+
+.result-container {
+  p {
+    margin-bottom: 0.7em;
+  }
+}
+
+.navbar-toggler-icon {
+  background-size: 75% 75%;
+}
