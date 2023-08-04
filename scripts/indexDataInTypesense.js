@@ -33,15 +33,18 @@ async function indexJSONL() {
         type: "float[]",
         // The following is Typesense's built-in embedding generation feature, supported starting from 0.25.0.rc60
         embed: {
+          // The field names in our JSON documents that need to be used for embedding generation
           from: ["text"],
-          /** 1. Using built-in Embedding Models
+          /**
+           * 1. Using built-in Embedding Models
            * We're using the Sentence-BERT model below,
-           * but you can also choose to use any of the built-in models here: https://huggingface.co/typesense/models/tree/main
+           *  but you can also choose to use any of the built-in models here: https://huggingface.co/typesense/models/tree/main
            */
           model_config: {
             model_name: "ts/all-MiniLM-L12-v2",
           },
-          /** 2. Using remote Embeddings Models:
+          /**
+           * 2. Using Remote Embedding Models:
            */
           /*** OpenAI */
           // model_config: {

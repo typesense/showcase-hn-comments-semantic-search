@@ -1,6 +1,6 @@
 # 🗞 Semantic + Keyword + Hybrid Search with HN Comments
 
-This is a demo that showcases [Typesense's](https://github.com/typesense/typesense) vector search features using a collection of 300K HN Comments.
+This is a demo that showcases [Typesense's](https://github.com/typesense/typesense) built-in embedding generation (available as of `0.25.0.rc60`) + vector search features using a collection of 300K HN Comments.
 
 View it live here: [hn-comments-search.typesense.org](https://hn-comments-search.typesense.org)
 
