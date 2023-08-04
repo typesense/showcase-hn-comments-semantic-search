@@ -78,7 +78,8 @@ async function indexJSONL() {
   await client.collections().create(schema);
 
   // read the JSONL file and parse it into batches
-  const jsonlFilePath = "data/hn-comments-oct-2022.jsonl";
+  // const jsonlFilePath = "data/hn-comments-oct-2022.jsonl";
+  const jsonlFilePath = "data/hn-comments-1000-sample.jsonl";
   const jsonlReadStream = fs.createReadStream(jsonlFilePath, {
     encoding: "utf8",
   });
