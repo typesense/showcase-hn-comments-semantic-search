@@ -1,4 +1,4 @@
-# 🎶 Semantic + Keyword + Hybrid Search with HN Comments
+# 🗞 Semantic + Keyword + Hybrid Search with HN Comments
 
 This is a demo that showcases [Typesense's](https://github.com/typesense/typesense) vector search features using a collection of 300K HN Comments.
 
