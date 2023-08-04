@@ -108,7 +108,8 @@ function renderSearch(searchType) {
       container: "#searchbox",
       showSubmit: false,
       showReset: false,
-      placeholder: "Type in a song, artist or album name",
+      placeholder:
+        "Type in a search term, or click on one of the examples below",
       autofocus: true,
       cssClasses: {
         input: "form-control",
@@ -166,7 +167,7 @@ function renderSearch(searchType) {
                   hit.display_timestamp
                 } | <a class="text-decoration-none" href="https://news.ycombinator.com/item?id=${
                   hit.id
-                }" target="_blank">link</a>| <a class="text-decoration-none"href="https://news.ycombinator.com/item?id=${
+                }" target="_blank">link</a> | <a class="text-decoration-none"href="https://news.ycombinator.com/item?id=${
                   hit.parent
                 }" target="_blank">parent</a>
               </div>
