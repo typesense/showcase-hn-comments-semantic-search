@@ -31,11 +31,37 @@ async function indexJSONL() {
       {
         name: "embedding",
         type: "float[]",
+        // The following is Typesense's built-in embedding generation feature, supported starting from 0.25.0.rc60
         embed: {
           from: ["text"],
+          /** 1. Using built-in Embedding Models
+           * We're using the Sentence-BERT model below,
+           * but you can also choose to use any of the built-in models here: https://huggingface.co/typesense/models/tree/main
+           */
           model_config: {
             model_name: "ts/all-MiniLM-L12-v2",
           },
+          /** 2. Using remote Embeddings Models:
+           */
+          /*** OpenAI */
+          // model_config: {
+          //   model_name: "openai/text-embedding-ada-002",
+          //   api_key: "your_openai_api_key",
+          // },
+          /*** Google's PaLM API */
+          // model_config: {
+          //   model_name: "google/embedding-gecko-001",
+          //   api_key: "your_palm_api_key_from_makersuite.google.com",
+          // },
+          /*** GCP Vertex API */
+          // model_config: {
+          //   model_name: "gcp/embedding-gecko-001",
+          //   access_token: "your_gcp_access_token",
+          //   refresh_token: "your_gcp_refresh_token",
+          //   client_id: "your_gcp_app_client_id",
+          //   client_secret: "your_gcp_client_secret",
+          //   project_id: "your_gcp_project_id",
+          // },
         },
       },
     ],
