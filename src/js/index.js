@@ -93,6 +93,8 @@ function renderSearch(searchType) {
     //  queryBy is required.
     additionalSearchParameters: {
       query_by: queryBy,
+      // This fetches 100 (nearest neighbor) results for semantic / hybrid search
+      vector_query: "embedding:([], k:100)",
     },
   });
   const searchClient = typesenseInstantsearchAdapter.searchClient;
