@@ -93,8 +93,7 @@ function renderSearch(searchType) {
     //  queryBy is required.
     additionalSearchParameters: {
       query_by: queryBy,
-      // This fetches 100 (nearest neighbor) results for semantic / hybrid search
-      vector_query: "embedding:([], k:100)",
+      exclude_fields: "embedding",
     },
   });
   const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -103,6 +102,32 @@ function renderSearch(searchType) {
     searchClient,
     indexName: INDEX_NAME,
     routing: true,
+    async searchFunction(helper) {
+      // This fetches 200 (nearest neighbor) results for semantic / hybrid search
+
+      let query = helper.getQuery().query;
+      const page = helper.getPage(); // Retrieve the current page
+
+      if (
+        query !== "" &&
+        ["semantic", "hybrid"].includes($("#search-type-select").val())
+      ) {
+        console.log(helper.getQuery().query);
+        helper
+          .setQueryParameter(
+            "typesenseVectorQuery", // <=== Special parameter that only works in typesense-instantsearch-adapter@2.7.0-3 and above
+            `embedding:([], k:200)`,
+          )
+          .setPage(page)
+          .search();
+        console.log(helper.getQuery().query);
+      } else {
+        helper
+          .setQueryParameter("typesenseVectorQuery", null)
+          .setPage(page)
+          .search();
+      }
+    },
   });
 
   search.addWidgets([

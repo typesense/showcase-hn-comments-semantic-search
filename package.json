@@ -13,9 +13,9 @@
     "dotenv": "^16.0.3",
     "jquery": "^3.7.0",
     "@popperjs/core": "^2.11.8",
-    "typesense": "^1.7.0",
+    "typesense": "^1.7.2-3",
     "instantsearch.js": "^4.56.8",
-    "typesense-instantsearch-adapter": "^2.7.1"
+    "typesense-instantsearch-adapter": "^2.8.0-0"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "2.8.3",
