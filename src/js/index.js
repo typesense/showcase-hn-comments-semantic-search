@@ -10,6 +10,7 @@ import {
   stats,
   configure,
 } from "instantsearch.js/es/widgets";
+import { history } from "instantsearch.js/es/lib/routers";
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { SearchClient as TypesenseSearchClient } from "typesense"; // To get the total number of docs
 
@@ -112,7 +113,11 @@ function renderSearch(searchType) {
   search = instantsearch({
     searchClient,
     indexName: INDEX_NAME,
-    routing: true,
+    routing: {
+      router: history({
+        cleanUrlOnDispose: false,
+      }),
+    },
     onStateChange({ uiState, setUiState }) {
       const { "hn-comments": state } = uiState;
       const query = state.query || "";
