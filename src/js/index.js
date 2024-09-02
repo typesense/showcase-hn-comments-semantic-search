@@ -168,20 +168,37 @@ function renderSearch(searchType) {
         root: "text-end",
       },
       templates: {
-        text: ({ nbHits, hasNoResults, hasOneResult, processingTimeMS }) => {
-          let statsText = "";
-          if (hasNoResults) {
-            statsText = "No results";
-          } else if (hasOneResult) {
-            statsText = "1 result";
-          } else {
-            statsText = `${nbHits.toLocaleString()} results`;
-          }
-          return `${statsText} found ${
-            indexSize
-              ? ` - Searched ${indexSize.toLocaleString()} comments`
-              : ""
-          } in ${processingTimeMS}ms.`;
+        item(hit, { html, components }) {
+          return html`
+            <div class="result-container mb-4">
+              <div class="text-muted small">
+                <span class="text-primary">${hit.by}</span>|
+                ${new Date(hit.time * 1000).toLocaleString()}|
+                <a
+                  class="text-decoration-none"
+                  href="https://news.ycombinator.com/item?id=${hit.id}"
+                  target="_blank"
+                >
+                  link</a
+                >|
+                <a
+                  class="text-decoration-none"
+                  href="https://news.ycombinator.com/item?id=${hit.parent}"
+                  target="_blank"
+                >
+                  parent
+                </a>
+              </div>
+              <div class="mt-1">
+                ${components.Highlight({ hit, attribute: "text" })}
+              </div>
+            </div>
+          `;
+        },
+        empty(results, { html }) {
+          if (results.query === "") return null;
+
+          return html`No results found for "${results.query}"`;
         },
       },
     }),
@@ -193,26 +210,40 @@ function renderSearch(searchType) {
         loadMore: "btn btn-primary mx-auto d-block mt-4",
       },
       templates: {
-        item(hit) {
-          return `
+        item(hit, { html, components }) {
+          return html`
             <div class="result-container mb-4">
               <div class="text-muted small">
-                <span class="text-primary">${hit.by}</span> | ${
-                  hit.display_timestamp
-                } | <a class="text-decoration-none" href="https://news.ycombinator.com/item?id=${
-                  hit.id
-                }" target="_blank">link</a> | <a class="text-decoration-none"href="https://news.ycombinator.com/item?id=${
-                  hit.parent
-                }" target="_blank">parent</a>
+                <span class="text-primary me-2">${hit.by}</span>|
+                <span class="mx-1"
+                  >${new Date(hit.time * 1000).toLocaleString()}</span
+                >|
+                <a
+                  class="text-decoration-none mx-1"
+                  href="https://news.ycombinator.com/item?id=${hit.id}"
+                  target="_blank"
+                >
+                  link</a
+                >|
+                <a
+                  class="text-decoration-none mx-1"
+                  href="https://news.ycombinator.com/item?id=${hit.parent}"
+                  target="_blank"
+                >
+                  parent
+                </a>
               </div>
-              <div class="mt-1" >
-                ${decodeHtml(hit._highlightResult.text.value || hit.value)}
+              <div class="mt-1">
+                ${components.Highlight({ hit, attribute: "text" })}
               </div>
             </div>
-        `;
+          `;
         },
-        empty:
-          "No comments found for <q>{{ query }}</q>. Try another search term.",
+        empty(results, { html }) {
+          if (results.query === "") return null;
+
+          return html`No results found for "${results.query}"`;
+        },
       },
       transformItems: (items) => {
         return items.map((item) => {
@@ -251,6 +282,9 @@ function renderSearch(searchType) {
   search.on("render", function () {
     // Make artist names clickable
     $("#hits .clickable-search-term").on("click", handleSearchTermClick);
+    document.querySelectorAll(".ais-Highlight").forEach((element) => {
+      element.innerHTML = decodeHtml(element.innerHTML);
+    });
   });
 
   search.use(googleAnalyticsMiddleware);
