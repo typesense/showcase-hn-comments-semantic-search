@@ -64,7 +64,6 @@ async function getIndexSize() {
 }
 
 let indexSize;
-
 (async () => {
   indexSize = await getIndexSize();
 })();
@@ -76,24 +75,20 @@ function renderSearch(searchType) {
     search.dispose();
   }
 
-  let queryBy;
-
-  if (searchType === "semantic") {
-    queryBy = "embedding";
-  } else if (searchType === "keyword") {
-    queryBy = "text";
-  } else {
-    queryBy = "text,embedding";
-  }
-
   const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     server: TYPESENSE_SERVER_CONFIG,
     // The following parameters are directly passed to Typesense's search API endpoint.
     //  So you can pass any parameters supported by the search endpoint below.
     //  queryBy is required.
     additionalSearchParameters: {
-      query_by: queryBy,
+      query_by:
+        searchType === "keyword"
+          ? "text"
+          : searchType === "semantic"
+          ? "embedding"
+          : "text,embedding",
       exclude_fields: "embedding",
+      vector_query: searchType === "keyword" ? null : "embedding:([], k:200)",
     },
   });
   const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -102,31 +97,30 @@ function renderSearch(searchType) {
     searchClient,
     indexName: INDEX_NAME,
     routing: true,
-    async searchFunction(helper) {
-      // This fetches 200 (nearest neighbor) results for semantic / hybrid search
+    onStateChange({ uiState, setUiState }) {
+      const { "hn-comments": state } = uiState;
+      const query = state.query || "";
+      const page = state.page || 0;
+      const searchType = $("#search-type-select").val();
 
-      let query = helper.getQuery().query;
-      const page = helper.getPage(); // Retrieve the current page
+      const configure = {
+        ...state.configure,
+        typesenseVectorQuery:
+          query && ["semantic", "hybrid"].includes(searchType)
+            ? `embedding:([], k:200)`
+            : null,
+      };
 
-      if (
-        query !== "" &&
-        ["semantic", "hybrid"].includes($("#search-type-select").val())
-      ) {
-        console.log(helper.getQuery().query);
-        helper
-          .setQueryParameter(
-            "typesenseVectorQuery", // <=== Special parameter that only works in typesense-instantsearch-adapter@2.7.0-3 and above
-            `embedding:([], k:200)`,
-          )
-          .setPage(page)
-          .search();
-        console.log(helper.getQuery().query);
-      } else {
-        helper
-          .setQueryParameter("typesenseVectorQuery", null)
-          .setPage(page)
-          .search();
-      }
+      const newUiState = {
+        ...uiState,
+        "hn-comments": {
+          ...state,
+          configure,
+          page,
+        },
+      };
+
+      setUiState(newUiState);
     },
   });
 
