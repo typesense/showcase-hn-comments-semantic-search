@@ -9,23 +9,24 @@
     "build": "parcel build index.html --public-url https://hn-comments-search.typesense.org"
   },
   "dependencies": {
-    "bootstrap": "^5.3.1",
-    "dotenv": "^16.0.3",
-    "jquery": "^3.7.0",
+    "@babel/runtime": "^7.25.6",
     "@popperjs/core": "^2.11.8",
-    "typesense": "^1.7.2-3",
-    "instantsearch.js": "^4.56.8",
-    "typesense-instantsearch-adapter": "^2.8.0-0"
+    "bootstrap": "^5.3.3",
+    "dotenv": "^16.4.5",
+    "instantsearch.js": "^4.74.0",
+    "jquery": "^3.7.1",
+    "typesense": "^1.8.2",
+    "typesense-instantsearch-adapter": "^2.8.0"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "2.8.3",
+    "@parcel/transformer-sass": "^2.12.0",
     "buffer": "^5.5.0",
-    "parcel": "^2.8.3",
-    "process": "^0.11.10",
     "eslint": "8.46.0",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-import": "2.28.0",
     "eslint-plugin-prettier": "5.0.0",
-    "prettier": "3.0.1"
+    "parcel": "^2.8.3",
+    "prettier": "3.0.1",
+    "process": "^0.11.10"
   }
 }
