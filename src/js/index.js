@@ -1,6 +1,7 @@
 import jQuery from "jquery";
 window.$ = jQuery; // workaround for https://github.com/parcel-bundler/parcel/issues/333
 import "bootstrap";
+import { debounce } from "instantsearch.js/es/lib/utils";
 import instantsearch from "instantsearch.js/es";
 import {
   searchBox,
@@ -8,7 +9,6 @@ import {
   refinementList,
   stats,
   configure,
-  analytics,
 } from "instantsearch.js/es/widgets";
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { SearchClient as TypesenseSearchClient } from "typesense"; // To get the total number of docs
@@ -69,6 +69,22 @@ let indexSize;
 })();
 
 let search;
+
+function googleAnalyticsMiddleware() {
+  const sendEventDebounced = debounce(() => {
+    gtag("event", "page_view", {
+      page_location: window.location.pathname + window.location.search,
+    });
+  }, 3000);
+
+  return {
+    onStateChange() {
+      sendEventDebounced();
+    },
+    subscribe() {},
+    unsubscribe() {},
+  };
+}
 
 function renderSearch(searchType) {
   if (search) {
@@ -134,17 +150,6 @@ function renderSearch(searchType) {
       autofocus: true,
       cssClasses: {
         input: "form-control",
-      },
-    }),
-
-    analytics({
-      pushFunction(formattedParameters, state, results) {
-        window.ga(
-          "set",
-          "page",
-          (window.location.pathname + window.location.search).toLowerCase(),
-        );
-        window.ga("send", "pageView");
       },
     }),
 
@@ -240,6 +245,7 @@ function renderSearch(searchType) {
     $("#hits .clickable-search-term").on("click", handleSearchTermClick);
   });
 
+  search.use(googleAnalyticsMiddleware);
   search.start();
 }
 
