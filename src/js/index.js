@@ -118,6 +118,9 @@ function renderSearch(searchType) {
         cleanUrlOnDispose: false,
       }),
     },
+    future: {
+      preserveSharedStateOnUnmount: true,
+    },
     onStateChange({ uiState, setUiState }) {
       const { "hn-comments": state } = uiState;
       const query = state.query || "";
