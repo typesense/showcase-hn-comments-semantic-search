@@ -1,6 +1,7 @@
 import jQuery from "jquery";
 window.$ = jQuery; // workaround for https://github.com/parcel-bundler/parcel/issues/333
 import "bootstrap";
+import { debounce } from "instantsearch.js/es/lib/utils";
 import instantsearch from "instantsearch.js/es";
 import {
   searchBox,
@@ -8,8 +9,8 @@ import {
   refinementList,
   stats,
   configure,
-  analytics,
 } from "instantsearch.js/es/widgets";
+import { history } from "instantsearch.js/es/lib/routers";
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { SearchClient as TypesenseSearchClient } from "typesense"; // To get the total number of docs
 
@@ -64,26 +65,31 @@ async function getIndexSize() {
 }
 
 let indexSize;
-
 (async () => {
   indexSize = await getIndexSize();
 })();
 
 let search;
 
+function googleAnalyticsMiddleware() {
+  const sendEventDebounced = debounce(() => {
+    gtag("event", "page_view", {
+      page_location: window.location.pathname + window.location.search,
+    });
+  }, 3000);
+
+  return {
+    onStateChange() {
+      sendEventDebounced();
+    },
+    subscribe() {},
+    unsubscribe() {},
+  };
+}
+
 function renderSearch(searchType) {
   if (search) {
     search.dispose();
-  }
-
-  let queryBy;
-
-  if (searchType === "semantic") {
-    queryBy = "embedding";
-  } else if (searchType === "keyword") {
-    queryBy = "text";
-  } else {
-    queryBy = "text,embedding";
   }
 
   const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
@@ -92,8 +98,14 @@ function renderSearch(searchType) {
     //  So you can pass any parameters supported by the search endpoint below.
     //  queryBy is required.
     additionalSearchParameters: {
-      query_by: queryBy,
+      query_by:
+        searchType === "keyword"
+          ? "text"
+          : searchType === "semantic"
+          ? "embedding"
+          : "text,embedding",
       exclude_fields: "embedding",
+      vector_query: searchType === "keyword" ? null : "embedding:([], k:200)",
     },
   });
   const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -101,32 +113,38 @@ function renderSearch(searchType) {
   search = instantsearch({
     searchClient,
     indexName: INDEX_NAME,
-    routing: true,
-    async searchFunction(helper) {
-      // This fetches 200 (nearest neighbor) results for semantic / hybrid search
+    routing: {
+      router: history({
+        cleanUrlOnDispose: false,
+      }),
+    },
+    future: {
+      preserveSharedStateOnUnmount: true,
+    },
+    onStateChange({ uiState, setUiState }) {
+      const { "hn-comments": state } = uiState;
+      const query = state.query || "";
+      const page = state.page || 0;
+      const searchType = $("#search-type-select").val();
 
-      let query = helper.getQuery().query;
-      const page = helper.getPage(); // Retrieve the current page
+      const configure = {
+        ...state.configure,
+        typesenseVectorQuery:
+          query && ["semantic", "hybrid"].includes(searchType)
+            ? `embedding:([], k:200)`
+            : null,
+      };
 
-      if (
-        query !== "" &&
-        ["semantic", "hybrid"].includes($("#search-type-select").val())
-      ) {
-        console.log(helper.getQuery().query);
-        helper
-          .setQueryParameter(
-            "typesenseVectorQuery", // <=== Special parameter that only works in typesense-instantsearch-adapter@2.7.0-3 and above
-            `embedding:([], k:200)`,
-          )
-          .setPage(page)
-          .search();
-        console.log(helper.getQuery().query);
-      } else {
-        helper
-          .setQueryParameter("typesenseVectorQuery", null)
-          .setPage(page)
-          .search();
-      }
+      const newUiState = {
+        ...uiState,
+        "hn-comments": {
+          ...state,
+          configure,
+          page,
+        },
+      };
+
+      setUiState(newUiState);
     },
   });
 
@@ -143,17 +161,6 @@ function renderSearch(searchType) {
       },
     }),
 
-    analytics({
-      pushFunction(formattedParameters, state, results) {
-        window.ga(
-          "set",
-          "page",
-          (window.location.pathname + window.location.search).toLowerCase(),
-        );
-        window.ga("send", "pageView");
-      },
-    }),
-
     stats({
       container: "#stats",
       cssClasses: {
@@ -161,20 +168,37 @@ function renderSearch(searchType) {
         root: "text-end",
       },
       templates: {
-        text: ({ nbHits, hasNoResults, hasOneResult, processingTimeMS }) => {
-          let statsText = "";
-          if (hasNoResults) {
-            statsText = "No results";
-          } else if (hasOneResult) {
-            statsText = "1 result";
-          } else {
-            statsText = `${nbHits.toLocaleString()} results`;
-          }
-          return `${statsText} found ${
-            indexSize
-              ? ` - Searched ${indexSize.toLocaleString()} comments`
-              : ""
-          } in ${processingTimeMS}ms.`;
+        item(hit, { html, components }) {
+          return html`
+            <div class="result-container mb-4">
+              <div class="text-muted small">
+                <span class="text-primary">${hit.by}</span>|
+                ${new Date(hit.time * 1000).toLocaleString()}|
+                <a
+                  class="text-decoration-none"
+                  href="https://news.ycombinator.com/item?id=${hit.id}"
+                  target="_blank"
+                >
+                  link</a
+                >|
+                <a
+                  class="text-decoration-none"
+                  href="https://news.ycombinator.com/item?id=${hit.parent}"
+                  target="_blank"
+                >
+                  parent
+                </a>
+              </div>
+              <div class="mt-1">
+                ${components.Highlight({ hit, attribute: "text" })}
+              </div>
+            </div>
+          `;
+        },
+        empty(results, { html }) {
+          if (results.query === "") return null;
+
+          return html`No results found for "${results.query}"`;
         },
       },
     }),
@@ -186,26 +210,40 @@ function renderSearch(searchType) {
         loadMore: "btn btn-primary mx-auto d-block mt-4",
       },
       templates: {
-        item(hit) {
-          return `
+        item(hit, { html, components }) {
+          return html`
             <div class="result-container mb-4">
               <div class="text-muted small">
-                <span class="text-primary">${hit.by}</span> | ${
-                  hit.display_timestamp
-                } | <a class="text-decoration-none" href="https://news.ycombinator.com/item?id=${
-                  hit.id
-                }" target="_blank">link</a> | <a class="text-decoration-none"href="https://news.ycombinator.com/item?id=${
-                  hit.parent
-                }" target="_blank">parent</a>
+                <span class="text-primary me-2">${hit.by}</span>|
+                <span class="mx-1"
+                  >${new Date(hit.time * 1000).toLocaleString()}</span
+                >|
+                <a
+                  class="text-decoration-none mx-1"
+                  href="https://news.ycombinator.com/item?id=${hit.id}"
+                  target="_blank"
+                >
+                  link</a
+                >|
+                <a
+                  class="text-decoration-none mx-1"
+                  href="https://news.ycombinator.com/item?id=${hit.parent}"
+                  target="_blank"
+                >
+                  parent
+                </a>
               </div>
-              <div class="mt-1" >
-                ${decodeHtml(hit._highlightResult.text.value || hit.value)}
+              <div class="mt-1">
+                ${components.Highlight({ hit, attribute: "text" })}
               </div>
             </div>
-        `;
+          `;
         },
-        empty:
-          "No comments found for <q>{{ query }}</q>. Try another search term.",
+        empty(results, { html }) {
+          if (results.query === "") return null;
+
+          return html`No results found for "${results.query}"`;
+        },
       },
       transformItems: (items) => {
         return items.map((item) => {
@@ -244,8 +282,12 @@ function renderSearch(searchType) {
   search.on("render", function () {
     // Make artist names clickable
     $("#hits .clickable-search-term").on("click", handleSearchTermClick);
+    document.querySelectorAll(".ais-Highlight").forEach((element) => {
+      element.innerHTML = decodeHtml(element.innerHTML);
+    });
   });
 
+  search.use(googleAnalyticsMiddleware);
   search.start();
 }
 
