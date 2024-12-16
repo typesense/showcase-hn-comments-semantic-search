@@ -9,11 +9,11 @@
     "build": "parcel build index.html --public-url https://hn-comments-search.typesense.org"
   },
   "dependencies": {
-    "@babel/runtime": "^7.25.6",
+    "@babel/runtime": "^7.26.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
-    "dotenv": "^16.4.5",
-    "instantsearch.js": "^4.74.0",
+    "dotenv": "^16.4.7",
+    "instantsearch.js": "^4.75.6",
     "jquery": "^3.7.1",
     "typesense": "^1.8.2",
     "typesense-instantsearch-adapter": "^2.8.0"
