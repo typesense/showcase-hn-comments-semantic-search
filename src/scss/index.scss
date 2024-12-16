@@ -17,7 +17,7 @@ $primary-dark-1: darken($primary, 35%);
 $primary-dark-2: #e6bb00;
 $primary-dark-3: #ddc593;
 $primary-dark-4: #b3b0a4;
-$secondary: #D90368;
+$secondary: #d90368;
 $secondary-dark-1: darken($secondary, 10%);
 $secondary-dark-2: #4f1c34;
 $dark: $gray-900 !default;
@@ -30,7 +30,21 @@ $display3-weight: 700;
 $display4-weight: 700;
 $display-line-height: 1.1;
 
-$font-family-sans-serif: 'Palanquin', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-sans-serif:
+  'Palanquin',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  Arial,
+  'Noto Sans',
+  'Liberation Sans',
+  sans-serif,
+  'Apple Color Emoji',
+  'Segoe UI Emoji',
+  'Segoe UI Symbol',
+  'Noto Color Emoji';
 $font-size-base: 0.9rem;
 $h1-font-size: $font-size-base * 3.052;
 $h2-font-size: $font-size-base * 2.441;
@@ -39,23 +53,24 @@ $h4-font-size: $font-size-base * 1.563;
 $h5-font-size: $font-size-base * 1.25;
 $h6-font-size: $font-size-base;
 
-$border-radius: .25rem;
+$border-radius: 0.25rem;
 $table-border-color: lighten($gray-100, 5%);
 $table-cell-padding: 1rem;
 
 $enable-responsive-font-sizes: true;
 
 $grid-breakpoints: (
-        xs: 0,
-        sm: 576px,
-        md: 768px,
-        lg: 992px,
-        xl: 1200px,
-        xxl: 1800px
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1800px,
 );
+// https://github.com/twbs/bootstrap/issues/31963#issuecomment-899500222
+$min-contrast-ratio: 3.5;
 
-
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 .ais-SearchBox-loadingIndicator {
   position: absolute;

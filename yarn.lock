@@ -30,10 +30,17 @@
     js-tokens "^4.0.0"
     picocolors "^1.0.0"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.25.6":
+"@babel/runtime@^7.1.2":
   version "7.25.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.25.6.tgz#9afc3289f7184d8d7f98b099884c26317b9264d2"
   integrity sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
+"@babel/runtime@^7.26.0":
+  version "7.26.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.0.tgz#8600c2f595f277c60815256418b85356a65173c1"
+  integrity sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -1020,10 +1027,10 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-algoliasearch-helper@3.22.4:
-  version "3.22.4"
-  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.22.4.tgz#a9de9b69a79528c65d0149978c0d5bece7240484"
-  integrity sha512-fvBCywguW9f+939S6awvRMstqMF1XXcd2qs1r1aGqL/PJ1go/DqN06tWmDVmhCDqBJanm++imletrQWf0G2S1g==
+algoliasearch-helper@3.22.6:
+  version "3.22.6"
+  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.22.6.tgz#6a31c67d277a32f3f7ae1b8a6e57ca73f1e1a0b0"
+  integrity sha512-F2gSb43QHyvZmvH/2hxIjbk/uFdO2MguQYTFP7J+RowMW1csjIODMobEnpLI8nbLQuzZnGZdIxl5Bpy1k9+CFQ==
   dependencies:
     "@algolia/events" "^4.0.1"
 
@@ -1493,10 +1500,10 @@ dotenv-expand@^5.1.0:
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
   integrity sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
 
-dotenv@^16.4.5:
-  version "16.4.5"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
-  integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
+dotenv@^16.4.7:
+  version "16.4.7"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.7.tgz#0e20c5b82950140aa99be360a8a5f52335f53c26"
+  integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
 
 dotenv@^7.0.0:
   version "7.0.0"
@@ -2106,23 +2113,23 @@ instantsearch-ui-components@0.9.0:
   dependencies:
     "@babel/runtime" "^7.1.2"
 
-instantsearch.js@^4.74.0:
-  version "4.74.0"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.74.0.tgz#af5205c40c3b49daec29bf977cb30e19893257e0"
-  integrity sha512-IbKAvnQ03cxb1Ni1OpLv6Yuu1W7Cu1zGru77rvgzYyPsurknpjQHdBicszSZlKaK/zND7D5vhSNZoliiz9nuEQ==
+instantsearch.js@^4.75.6:
+  version "4.75.6"
+  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.75.6.tgz#72c0c315c91cc72bcc7219027b91ad0e765e038d"
+  integrity sha512-rQyF3VHmxdwR+9VFhwrBtKgAWjPIpN8QdjSOq72HHJOx4wZhLfBhJhOhSDhjl5GP1a1+Ly2/CI62K8ZDVeAEHw==
   dependencies:
     "@algolia/events" "^4.0.1"
     "@types/dom-speech-recognition" "^0.0.1"
     "@types/google.maps" "^3.55.12"
     "@types/hogan.js" "^3.0.0"
     "@types/qs" "^6.5.3"
-    algoliasearch-helper "3.22.4"
+    algoliasearch-helper "3.22.6"
     hogan.js "^3.0.2"
     htm "^3.0.0"
     instantsearch-ui-components "0.9.0"
     preact "^10.10.0"
     qs "^6.5.1 < 6.10"
-    search-insights "^2.15.0"
+    search-insights "^2.17.2"
 
 internal-slot@^1.0.7:
   version "1.0.7"
@@ -2931,10 +2938,10 @@ sass@^1.38.0:
     immutable "^4.0.0"
     source-map-js ">=0.6.2 <2.0.0"
 
-search-insights@^2.15.0:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/search-insights/-/search-insights-2.17.0.tgz#34db501d51d493a2a3d8ef50a852c2002f17eade"
-  integrity sha512-AskayU3QNsXQzSL6v4LTYST7NNfs2HWyHHB+sdORP9chsytAhro5XRfToAMI/LAVYgNbzowVZTMfBRodgbUHKg==
+search-insights@^2.17.2:
+  version "2.17.3"
+  resolved "https://registry.yarnpkg.com/search-insights/-/search-insights-2.17.3.tgz#8faea5d20507bf348caba0724e5386862847b661"
+  integrity sha512-RQPdCYTa8A68uM2jwxoY842xDhvx3E5LFL1LxvxCNMev4o5mLuokczhzjAgGwUZBAmOKZknArSxLKmXtIi2AxQ==
 
 semver@^6.3.1:
   version "6.3.1"
